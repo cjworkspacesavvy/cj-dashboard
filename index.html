@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CJ · SOG Command Center</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #1B263B; --navy-card: #243352; --navy-border: #2d3d65;
+      --orange: #E67E22; --white: #FFFFFF; --muted: #94a3b8;
+      --green: #22c55e; --radius: 14px;
+    }
+    body { font-family: 'Montserrat', arial, sans-serif; background: var(--navy); color: var(--white); min-height: 100vh; display: flex; flex-direction: column; }
+    #lock { position: fixed; inset: 0; background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; z-index: 999; }
+    #lock .brand-name { font-size: 12px; font-weight: 700; letter-spacing: 4px; color: var(--orange); text-transform: uppercase; }
+    #lock h1 { font-size: 28px; font-weight: 800; }
+    #lock .lock-icon { width: 56px; height: 56px; background: var(--navy-card); border: 2px solid var(--navy-border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+    #lock p { color: var(--muted); font-size: 13px; text-align: center; }
+    #lock .hint { font-size: 12px; color: var(--muted); background: var(--navy-card); padding: 10px 18px; border-radius: 8px; border: 1px solid var(--navy-border); }
+    header { background: var(--navy-card); border-bottom: 1px solid var(--navy-border); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; }
+    .header-left { display: flex; align-items: center; gap: 16px; }
+    .header-logo { width: 42px; height: 42px; background: var(--orange); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; color: var(--white); }
+    .header-titles h1 { font-size: 18px; font-weight: 700; }
+    .header-titles p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .header-date { font-size: 12px; color: var(--muted); }
+    main { flex: 1; padding: 40px; max-width: 1200px; margin: 0 auto; width: 100%; }
+    .hub-title { font-size: 11px; font-weight: 700; letter-spacing: 3px; color: var(--orange); text-transform: uppercase; margin-bottom: 20px; }
+    .hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .hub-card { background: var(--navy-card); border: 1px solid var(--navy-border); border-radius: var(--radius); padding: 28px; text-decoration: none; color: var(--white); display: flex; flex-direction: column; gap: 12px; transition: border-color 0.2s, transform 0.2s; position: relative; overflow: hidden; }
+    .hub-card:hover { border-color: var(--orange); transform: translateY(-2px); }
+    .hub-card.active { border-color: var(--orange); }
+    .hub-card.coming-soon { opacity: 0.4; pointer-events: none; }
+    .hub-card-icon { font-size: 28px; }
+    .hub-card-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--orange); text-transform: uppercase; }
+    .hub-card h2 { font-size: 18px; font-weight: 700; }
+    .hub-card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .hub-card-badge { position: absolute; top: 16px; right: 16px; font-size: 10px; font-weight: 700; background: var(--orange); color: var(--white); padding: 3px 10px; border-radius: 20px; text-transform: uppercase; }
+    .hub-card-badge.soon { background: var(--navy-border); color: var(--muted); }
+    .hub-card-arrow { margin-top: auto; font-size: 13px; color: var(--orange); font-weight: 600; }
+    footer { text-align: center; padding: 24px; font-size: 11px; color: var(--muted); border-top: 1px solid var(--navy-border); margin-top: auto; }
+  </style>
+</head>
+<body>
+<div id="lock">
+  <div class="lock-icon">🔒</div>
+  <div class="brand-name">Standard Operations Group</div>
+  <h1>CJ Personal Hub</h1>
+  <p>Private access only.<br>Open this page with your personal link to continue.</p>
+  <div class="hint">Bookmark: cj.standardoperationsgroup.net/#cjsog</div>
+</div>
+<div id="app" style="display:none; flex-direction:column; min-height:100vh;">
+  <header>
+    <div class="header-left">
+      <div class="header-logo">SOG</div>
+      <div class="header-titles">
+        <h1>CJ Personal Hub</h1>
+        <p>Standard Operations Group · Private Dashboard</p>
+      </div>
+    </div>
+    <div class="header-date" id="header-date"></div>
+  </header>
+  <main>
+    <div class="hub-title">Command Center</div>
+    <div class="hub-grid">
+      <a class="hub-card active" href="marketing.html">
+        <div class="hub-card-badge">Active</div>
+        <div class="hub-card-icon">📚</div>
+        <div class="hub-card-label">Learning</div>
+        <h2>Marketing Curriculum</h2>
+        <p>Weekly marketing lessons — theory &amp; practical. 24 sessions covering positioning, copywriting, ads, funnels, and more.</p>
+        <div class="hub-card-arrow">View Dashboard →</div>
+      </a>
+      <div class="hub-card coming-soon">
+        <div class="hub-card-badge soon">Coming Soon</div>
+        <div class="hub-card-icon">🎤</div>
+        <div class="hub-card-label">BNI</div>
+        <h2>Pitch History</h2>
+        <p>60-second commercial tracker — every script, every referral trigger, every week.</p>
+        <div class="hub-card-arrow">Coming Soon</div>
+      </div>
+      <div class="hub-card coming-soon">
+        <div class="hub-card-badge soon">Coming Soon</div>
+        <div class="hub-card-icon">🎯</div>
+        <div class="hub-card-label">Pipeline</div>
+        <h2>Client Snapshot</h2>
+        <p>Live SOG pipeline summary — opportunities, stages, and revenue at a glance.</p>
+        <div class="hub-card-arrow">Coming Soon</div>
+      </div>
+    </div>
+  </main>
+  <footer>Standard Operations Group · CJ Personal Hub · Private &amp; Confidential</footer>
+</div>
+<script>
+  const TOKEN = 'cjsog', LS_KEY = 'cj_hub_auth';
+  function unlock() {
+    document.getElementById('lock').style.display = 'none';
+    const app = document.getElementById('app'); app.style.display = 'flex';
+    document.getElementById('header-date').textContent = new Date().toLocaleDateString('en-US', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    localStorage.setItem(LS_KEY, TOKEN);
+    history.replaceState(null, '', window.location.pathname);
+  }
+  if (window.location.hash.replace('#','') === TOKEN || localStorage.getItem(LS_KEY) === TOKEN) unlock();
+</script>
+</body>
+</html>

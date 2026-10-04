@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CJ · Marketing Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --navy:#1B263B; --navy-card:#243352; --navy-border:#2d3d65; --orange:#E67E22; --white:#FFFFFF; --muted:#94a3b8; --green:#22c55e; --green-bg:rgba(34,197,94,0.12); --orange-bg:rgba(230,126,34,0.15); --radius:14px; }
+    body { font-family:'Montserrat',arial,sans-serif; background:var(--navy); color:var(--white); min-height:100vh; display:flex; flex-direction:column; }
+    #lock { position:fixed; inset:0; background:var(--navy); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; z-index:999; }
+    #lock h1 { font-size:24px; font-weight:800; } #lock p { color:var(--muted); font-size:13px; }
+    #lock .hint { font-size:12px; color:var(--muted); background:var(--navy-card); padding:10px 18px; border-radius:8px; border:1px solid var(--navy-border); }
+    header { background:var(--navy-card); border-bottom:1px solid var(--navy-border); padding:18px 40px; display:flex; align-items:center; justify-content:space-between; }
+    .header-left { display:flex; align-items:center; gap:14px; }
+    .back-btn { font-size:12px; font-weight:600; color:var(--orange); text-decoration:none; padding:6px 14px; border:1px solid var(--orange); border-radius:8px; }
+    .header-logo { width:38px; height:38px; background:var(--orange); border-radius:9px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; }
+    .header-titles h1 { font-size:17px; font-weight:700; } .header-titles p { font-size:11px; color:var(--muted); margin-top:2px; }
+    .header-date { font-size:11px; color:var(--muted); }
+    main { flex:1; padding:36px 40px; max-width:1200px; margin:0 auto; width:100%; }
+    .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:32px; }
+    .stat-card { background:var(--navy-card); border:1px solid var(--navy-border); border-radius:var(--radius); padding:20px 22px; }
+    .stat-label { font-size:10px; font-weight:700; letter-spacing:2px; color:var(--orange); text-transform:uppercase; margin-bottom:8px; }
+    .stat-value { font-size:32px; font-weight:800; line-height:1; } .stat-sub { font-size:12px; color:var(--muted); margin-top:6px; }
+    .mid-row { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:32px; }
+    .progress-card { background:var(--navy-card); border:1px solid var(--navy-border); border-radius:var(--radius); padding:28px; display:flex; flex-direction:column; align-items:center; gap:20px; }
+    .progress-card h2 { font-size:12px; font-weight:700; letter-spacing:2px; color:var(--orange); text-transform:uppercase; align-self:flex-start; }
+    .ring-wrap { position:relative; width:160px; height:160px; }
+    .ring-wrap svg { transform:rotate(-90deg); }
+    .ring-bg { fill:none; stroke:var(--navy-border); stroke-width:14; }
+    .ring-fg { fill:none; stroke:var(--orange); stroke-width:14; stroke-linecap:round; transition:stroke-dashoffset 1s ease; }
+    .ring-center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+    .ring-num { font-size:36px; font-weight:800; line-height:1; } .ring-denom { font-size:13px; color:var(--muted); } .ring-lbl { font-size:11px; color:var(--muted); }
+    .ring-legend { display:flex; gap:16px; flex-wrap:wrap; justify-content:center; }
+    .legend-pill { display:flex; align-items:center; gap:6px; font-size:11px; font-weight:600; color:var(--muted); }
+    .legend-dot { width:8px; height:8px; border-radius:50%; }
+    .sessions-col { display:flex; flex-direction:column; gap:16px; }
+    .session-card { background:var(--navy-card); border:1px solid var(--navy-border); border-radius:var(--radius); padding:22px; }
+    .session-card h3 { font-size:11px; font-weight:700; letter-spacing:2px; color:var(--orange); text-transform:uppercase; margin-bottom:14px; }
+    .session-topic { font-size:18px; font-weight:700; margin-bottom:6px; }
+    .session-meta { font-size:12px; color:var(--muted); margin-bottom:12px; }
+    .session-takeaway { font-size:13px; line-height:1.6; padding:12px 14px; background:rgba(255,255,255,0.04); border-left:3px solid var(--orange); border-radius:4px; }
+    .session-empty { font-size:13px; color:var(--muted); line-height:1.6; }
+    .next-badge { display:inline-block; font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; background:var(--orange-bg); color:var(--orange); padding:3px 10px; border-radius:20px; margin-bottom:10px; }
+    .curriculum-title { font-size:11px; font-weight:700; letter-spacing:3px; color:var(--orange); text-transform:uppercase; margin-bottom:16px; }
+    .pillar-group { margin-bottom:28px; }
+    .pillar-heading { font-size:12px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--navy-border); }
+    .curriculum-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; }
+    .topic-card { background:var(--navy-card); border-radius:10px; padding:16px; border:1.5px solid var(--navy-border); transition:transform 0.15s; }
+    .topic-card:hover { transform:translateY(-1px); }
+    .topic-card.mastered { border-color:var(--green); background:var(--green-bg); }
+    .topic-card.next-up { border-color:var(--orange); background:var(--orange-bg); }
+    .topic-num { font-size:10px; font-weight:700; color:var(--muted); margin-bottom:6px; }
+    .topic-name { font-size:13px; font-weight:600; line-height:1.4; margin-bottom:8px; }
+    .topic-status { font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+    .topic-card.mastered .topic-status { color:var(--green); } .topic-card.next-up .topic-status { color:var(--orange); } .topic-card.upcoming .topic-status { color:var(--muted); }
+    .topic-date { font-size:10px; color:var(--muted); margin-top:4px; }
+    footer { text-align:center; padding:20px; font-size:11px; color:var(--muted); border-top:1px solid var(--navy-border); }
+    @media(max-width:768px) { main{padding:24px 20px;} header{padding:16px 20px;} .stats-row{grid-template-columns:1fr 1fr;} .mid-row{grid-template-columns:1fr;} .curriculum-grid{grid-template-columns:1fr 1fr;} }
+  </style>
+</head>
+<body>
+<div id="lock">
+  <div style="font-size:32px">🔒</div>
+  <h1>CJ Personal Hub</h1>
+  <p>Open this page using your personal bookmarked link.</p>
+  <div class="hint">cj.standardoperationsgroup.net/#cjsog</div>
+</div>
+<div id="app" style="display:none; flex-direction:column; min-height:100vh;">
+  <header>
+    <div class="header-left">
+      <a class="back-btn" href="index.html">← Hub</a>
+      <div class="header-logo">SOG</div>
+      <div class="header-titles"><h1>Marketing Curriculum</h1><p>Weekly Learning Dashboard · Standard Operations Group</p></div>
+    </div>
+    <div class="header-date" id="header-date"></div>
+  </header>
+  <main>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">Current Week</div><div class="stat-value" id="stat-week">1</div><div class="stat-sub">of 24 sessions</div></div>
+      <div class="stat-card"><div class="stat-label">Mastered</div><div class="stat-value" id="stat-mastered">0</div><div class="stat-sub">topics complete</div></div>
+      <div class="stat-card"><div class="stat-label">Theory</div><div class="stat-value" id="stat-theory">0<span style="font-size:16px;font-weight:500;color:var(--muted)">/12</span></div><div class="stat-sub">sessions done</div></div>
+      <div class="stat-card"><div class="stat-label">Practical</div><div class="stat-value" id="stat-practical">0<span style="font-size:16px;font-weight:500;color:var(--muted)">/12</span></div><div class="stat-sub">sessions done</div></div>
+    </div>
+    <div class="mid-row">
+      <div class="progress-card">
+        <h2>Overall Progress</h2>
+        <div class="ring-wrap">
+          <svg width="160" height="160" viewBox="0 0 160 160">
+            <circle class="ring-bg" cx="80" cy="80" r="66"/>
+            <circle class="ring-fg" id="ring-fg" cx="80" cy="80" r="66" stroke-dasharray="414.69" stroke-dashoffset="414.69"/>
+          </svg>
+          <div class="ring-center">
+            <div class="ring-num" id="ring-pct">0%</div>
+            <div class="ring-denom" id="ring-label">0 / 24</div>
+            <div class="ring-lbl">complete</div>
+          </div>
+        </div>
+        <div class="ring-legend">
+          <div class="legend-pill"><div class="legend-dot" style="background:var(--green)"></div> Mastered</div>
+          <div class="legend-pill"><div class="legend-dot" style="background:var(--orange)"></div> Next Up</div>
+          <div class="legend-pill"><div class="legend-dot" style="background:var(--navy-border)"></div> Upcoming</div>
+        </div>
+      </div>
+      <div class="sessions-col">
+        <div class="session-card">
+          <h3>Next Session</h3>
+          <div class="next-badge" id="next-pillar">Theory</div>
+          <div class="session-topic" id="next-topic">Positioning &amp; Differentiation</div>
+          <div class="session-meta" id="next-meta">Session 1 · Monday, Oct 6 2026</div>
+          <div class="session-takeaway">What makes you THE obvious choice — not just a good option. The foundation everything else builds on.</div>
+        </div>
+        <div class="session-card">
+          <h3>Last Session</h3>
+          <div class="session-empty" id="last-session-content">No sessions completed yet.<br><span style="color:var(--orange);font-weight:600">First lesson drops Monday, Oct 6 at 7am.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="curriculum-title">Full Curriculum</div>
+    <div class="pillar-group"><div class="pillar-heading">📖 Theory Track — 12 Sessions</div><div class="curriculum-grid" id="theory-grid"></div></div>
+    <div class="pillar-group"><div class="pillar-heading">⚙️ Practical Track — 12 Sessions</div><div class="curriculum-grid" id="practical-grid"></div></div>
+  </main>
+  <footer>Standard Operations Group · CJ Marketing Dashboard · Updated after each Monday session</footer>
+</div>
+<script>
+const CURRICULUM = [
+  {n:1,pillar:"Theory",topic:"Positioning & Differentiation",status:"next-up",date:"",takeaway:""},
+  {n:2,pillar:"Theory",topic:"Offer Design",status:"upcoming",date:"",takeaway:""},
+  {n:3,pillar:"Theory",topic:"Copywriting Fundamentals",status:"upcoming",date:"",takeaway:""},
+  {n:4,pillar:"Theory",topic:"Psychology of Persuasion",status:"upcoming",date:"",takeaway:""},
+  {n:5,pillar:"Theory",topic:"Storytelling in Marketing",status:"upcoming",date:"",takeaway:""},
+  {n:6,pillar:"Theory",topic:"Funnel Strategy",status:"upcoming",date:"",takeaway:""},
+  {n:7,pillar:"Theory",topic:"Email Marketing Theory",status:"upcoming",date:"",takeaway:""},
+  {n:8,pillar:"Theory",topic:"Pricing Strategy",status:"upcoming",date:"",takeaway:""},
+  {n:9,pillar:"Theory",topic:"Voice of Customer Research",status:"upcoming",date:"",takeaway:""},
+  {n:10,pillar:"Theory",topic:"Brand Strategy",status:"upcoming",date:"",takeaway:""},
+  {n:11,pillar:"Theory",topic:"Customer Retention & Referral",status:"upcoming",date:"",takeaway:""},
+  {n:12,pillar:"Theory",topic:"Marketing Metrics & Attribution",status:"upcoming",date:"",takeaway:""},
+  {n:13,pillar:"Practical",topic:"Local SEO & Google Business Profile",status:"upcoming",date:"",takeaway:""},
+  {n:14,pillar:"Practical",topic:"Google Search Ads",status:"upcoming",date:"",takeaway:""},
+  {n:15,pillar:"Practical",topic:"Facebook & Instagram Ads",status:"upcoming",date:"",takeaway:""},
+  {n:16,pillar:"Practical",topic:"TikTok — Organic & Paid",status:"upcoming",date:"",takeaway:""},
+  {n:17,pillar:"Practical",topic:"Social Media Content Strategy",status:"upcoming",date:"",takeaway:""},
+  {n:18,pillar:"Practical",topic:"Email Campaigns in the Platform",status:"upcoming",date:"",takeaway:""},
+  {n:19,pillar:"Practical",topic:"Funnel & Landing Page Building",status:"upcoming",date:"",takeaway:""},
+  {n:20,pillar:"Practical",topic:"CRM Workflow Automation",status:"upcoming",date:"",takeaway:""},
+  {n:21,pillar:"Practical",topic:"Ad Manager Walkthrough",status:"upcoming",date:"",takeaway:""},
+  {n:22,pillar:"Practical",topic:"Social Planner Walkthrough",status:"upcoming",date:"",takeaway:""},
+  {n:23,pillar:"Practical",topic:"Review & Reputation Management",status:"upcoming",date:"",takeaway:""},
+  {n:24,pillar:"Practical",topic:"Analytics Dashboard & Reporting",status:"upcoming",date:"",takeaway:""}
+];
+const TOKEN='cjsog', LS_KEY='cj_hub_auth';
+function renderDashboard(){
+  document.getElementById('lock').style.display='none';
+  const app=document.getElementById('app'); app.style.display='flex';
+  localStorage.setItem(LS_KEY,TOKEN);
+  history.replaceState(null,'',window.location.pathname);
+  document.getElementById('header-date').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const mastered=CURRICULUM.filter(t=>t.status==='mastered');
+  const theoryDone=mastered.filter(t=>t.pillar==='Theory').length;
+  const practicalDone=mastered.filter(t=>t.pillar==='Practical').length;
+  const total=mastered.length;
+  document.getElementById('stat-week').textContent=total+1;
+  document.getElementById('stat-mastered').textContent=total;
+  document.getElementById('stat-theory').innerHTML=theoryDone+'<span style="font-size:16px;font-weight:500;color:var(--muted)">/12</span>';
+  document.getElementById('stat-practical').innerHTML=practicalDone+'<span style="font-size:16px;font-weight:500;color:var(--muted)">/12</span>';
+  const pct=Math.round((total/24)*100);
+  document.getElementById('ring-fg').style.strokeDashoffset=414.69-(pct/100)*414.69;
+  document.getElementById('ring-pct').textContent=pct+'%';
+  document.getElementById('ring-label').textContent=total+' / 24';
+  const nextUp=CURRICULUM.find(t=>t.status==='next-up');
+  if(nextUp){document.getElementById('next-pillar').textContent=nextUp.pillar;document.getElementById('next-topic').textContent=nextUp.topic;document.getElementById('next-meta').textContent='Session '+nextUp.n;}
+  const lastDone=[...mastered].sort((a,b)=>b.n-a.n)[0];
+  if(lastDone){document.getElementById('last-session-content').innerHTML='<div class="next-badge" style="background:rgba(34,197,94,0.15);color:var(--green)">'+lastDone.pillar+'</div><div class="session-topic">'+lastDone.topic+'</div><div class="session-meta">'+lastDone.date+'</div>'+(lastDone.takeaway?'<div class="session-takeaway">'+lastDone.takeaway+'</div>':'');}
+  ['Theory','Practical'].forEach(pillar=>{
+    const grid=document.getElementById(pillar.toLowerCase()+'-grid');
+    CURRICULUM.filter(t=>t.pillar===pillar).forEach(t=>{
+      const card=document.createElement('div');
+      card.className='topic-card '+t.status;
+      card.innerHTML='<div class="topic-num">Session '+t.n+'</div><div class="topic-name">'+t.topic+'</div><div class="topic-status">'+(t.status==='mastered'?'✅ Mastered':t.status==='next-up'?'🔜 Next Up':'⏳ Upcoming')+'</div>'+(t.date?'<div class="topic-date">'+t.date+'</div>':'');
+      grid.appendChild(card);
+    });
+  });
+}
+if(window.location.hash.replace('#','')===TOKEN||localStorage.getItem(LS_KEY)===TOKEN) renderDashboard();
+</script>
+</body>
+</html>
