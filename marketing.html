@@ -62,7 +62,7 @@
 </head>
 <body>
 <div id="lock">
-  <div style="font-size:32px">🔒</div>
+  <div style="font-size:32px">&#128274;</div>
   <h1>CJ Personal Hub</h1>
   <p>Open this page using your personal bookmarked link.</p>
   <div class="hint">cj.standardoperationsgroup.net/#cjsog</div>
@@ -70,15 +70,15 @@
 <div id="app" style="display:none; flex-direction:column; min-height:100vh;">
   <header>
     <div class="header-left">
-      <a class="back-btn" href="index.html">← Hub</a>
+      <a class="back-btn" href="index.html">&larr; Hub</a>
       <div class="header-logo">SOG</div>
-      <div class="header-titles"><h1>Marketing Curriculum</h1><p>Weekly Learning Dashboard · Standard Operations Group</p></div>
+      <div class="header-titles"><h1>Marketing Curriculum</h1><p>Weekly Learning Dashboard &middot; Standard Operations Group</p></div>
     </div>
     <div class="header-date" id="header-date"></div>
   </header>
   <main>
     <div class="stats-row">
-      <div class="stat-card"><div class="stat-label">Current Week</div><div class="stat-value" id="stat-week">1</div><div class="stat-sub">of 24 sessions</div></div>
+      <div class="stat-card"><div class="stat-label">Current Week</div><div class="stat-value" id="stat-week">2</div><div class="stat-sub">of 24 sessions</div></div>
       <div class="stat-card"><div class="stat-label">Mastered</div><div class="stat-value" id="stat-mastered">0</div><div class="stat-sub">topics complete</div></div>
       <div class="stat-card"><div class="stat-label">Theory</div><div class="stat-value" id="stat-theory">0<span style="font-size:16px;font-weight:500;color:var(--muted)">/12</span></div><div class="stat-sub">sessions done</div></div>
       <div class="stat-card"><div class="stat-label">Practical</div><div class="stat-value" id="stat-practical">0<span style="font-size:16px;font-weight:500;color:var(--muted)">/12</span></div><div class="stat-sub">sessions done</div></div>
@@ -107,26 +107,26 @@
         <div class="session-card">
           <h3>Next Session</h3>
           <div class="next-badge" id="next-pillar">Theory</div>
-          <div class="session-topic" id="next-topic">Positioning &amp; Differentiation</div>
-          <div class="session-meta" id="next-meta">Session 1 · Monday, Oct 6 2026</div>
-          <div class="session-takeaway">What makes you THE obvious choice — not just a good option. The foundation everything else builds on.</div>
+          <div class="session-topic" id="next-topic">Offer Design</div>
+          <div class="session-meta" id="next-meta">Session 2</div>
+          <div class="session-takeaway">Making offers that sell themselves &mdash; value stacking, guarantees, and pricing that removes risk from the buyer's mind.</div>
         </div>
         <div class="session-card">
           <h3>Last Session</h3>
-          <div class="session-empty" id="last-session-content">No sessions completed yet.<br><span style="color:var(--orange);font-weight:600">First lesson drops Monday, Oct 6 at 7am.</span></div>
+          <div class="session-empty" id="last-session-content"><div class="next-badge" style="background:rgba(34,197,94,0.15);color:var(--green)">Theory</div><div class="session-topic">Positioning &amp; Differentiation</div><div class="session-meta">Oct 5, 2026</div><div class="session-takeaway">Positioning lives in the mind of your prospect, not in your marketing. Own a single word, dominate a category, or create one no competitor has claimed yet.</div></div>
         </div>
       </div>
     </div>
     <div class="curriculum-title">Full Curriculum</div>
-    <div class="pillar-group"><div class="pillar-heading">📖 Theory Track — 12 Sessions</div><div class="curriculum-grid" id="theory-grid"></div></div>
-    <div class="pillar-group"><div class="pillar-heading">⚙️ Practical Track — 12 Sessions</div><div class="curriculum-grid" id="practical-grid"></div></div>
+    <div class="pillar-group"><div class="pillar-heading">&#128218; Theory Track &mdash; 12 Sessions</div><div class="curriculum-grid" id="theory-grid"></div></div>
+    <div class="pillar-group"><div class="pillar-heading">&#9881;&#65039; Practical Track &mdash; 12 Sessions</div><div class="curriculum-grid" id="practical-grid"></div></div>
   </main>
-  <footer>Standard Operations Group · CJ Marketing Dashboard · Updated after each Monday session</footer>
+  <footer>Standard Operations Group &middot; CJ Marketing Dashboard &middot; Updated after each Monday session</footer>
 </div>
 <script>
 const CURRICULUM = [
-  {n:1,pillar:"Theory",topic:"Positioning & Differentiation",status:"next-up",date:"",takeaway:""},
-  {n:2,pillar:"Theory",topic:"Offer Design",status:"upcoming",date:"",takeaway:""},
+  {n:1,pillar:"Theory",topic:"Positioning & Differentiation",status:"mastered",date:"Oct 5, 2026",takeaway:"Positioning lives in the mind of your prospect, not in your marketing. Own a single word, dominate a category, or create one no competitor has claimed yet."},
+  {n:2,pillar:"Theory",topic:"Offer Design",status:"next-up",date:"",takeaway:""},
   {n:3,pillar:"Theory",topic:"Copywriting Fundamentals",status:"upcoming",date:"",takeaway:""},
   {n:4,pillar:"Theory",topic:"Psychology of Persuasion",status:"upcoming",date:"",takeaway:""},
   {n:5,pillar:"Theory",topic:"Storytelling in Marketing",status:"upcoming",date:"",takeaway:""},
@@ -178,7 +178,7 @@ function renderDashboard(){
     CURRICULUM.filter(t=>t.pillar===pillar).forEach(t=>{
       const card=document.createElement('div');
       card.className='topic-card '+t.status;
-      card.innerHTML='<div class="topic-num">Session '+t.n+'</div><div class="topic-name">'+t.topic+'</div><div class="topic-status">'+(t.status==='mastered'?'✅ Mastered':t.status==='next-up'?'🔜 Next Up':'⏳ Upcoming')+'</div>'+(t.date?'<div class="topic-date">'+t.date+'</div>':'');
+      card.innerHTML='<div class="topic-num">Session '+t.n+'</div><div class="topic-name">'+t.topic+'</div><div class="topic-status">'+(t.status==='mastered'?'&#10003; Mastered':t.status==='next-up'?'&#128640; Next Up':'&#9203; Upcoming')+'</div>'+(t.date?'<div class="topic-date">'+t.date+'</div>':'');
       grid.appendChild(card);
     });
   });
